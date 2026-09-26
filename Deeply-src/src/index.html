@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://www.youtube.com https://s.ytimg.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; img-src 'self' file: data: https:; style-src 'self' 'unsafe-inline'; media-src 'self' data: blob:; connect-src 'self' https:">
+  <title>Deeply</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="bg"><div class="bg-base"></div><div class="bg-img"></div><div class="bg-wash"></div></div>
+
+  <header class="titlebar">
+    <img class="logo" src="../assets/icon.png" alt="">
+    <span class="app-name">Deeply</span>
+    <span class="title-status" id="titleStatus"></span>
+  </header>
+
+  <main class="app">
+    <!-- tasks -->
+    <aside class="glass tasks-panel">
+      <h1>Задачи</h1>
+      <div class="seg" id="scopeSeg">
+        <div class="seg-thumb"></div>
+        <button data-scope="0">Сегодня <b class="count"></b></button>
+        <button data-scope="1">Неделя <b class="count"></b></button>
+      </div>
+      <div class="summary" id="summary"></div>
+      <form class="add-row" id="addForm" autocomplete="off">
+        <input id="taskInput" maxlength="200" placeholder="Задача на сегодня… (Enter)">
+        <div class="stepper" id="estimate" title="Сколько арбузов займёт задача">
+          <button type="button" data-d="-1">−</button><span>1</span><button type="button" data-d="1">+</button>
+        </div>
+        <button class="btn primary icon-btn add-btn" type="submit" title="Добавить задачу" data-icon="plus"></button>
+      </form>
+      <ul class="task-list" id="taskList"></ul>
+      <footer class="tasks-footer">
+        <label class="checkline"><input type="checkbox" id="showDone"><span class="box"></span>Показать выполненные</label>
+        <button class="link" id="clearDone">Очистить</button>
+      </footer>
+    </aside>
+
+    <!-- main column -->
+    <section class="main-col" id="mainCol">
+      <div class="topbar">
+        <div class="seg phases" id="phaseSeg">
+          <div class="seg-thumb"></div>
+          <button data-phase="focus">Фокус</button>
+          <button data-phase="short">Перерыв</button>
+          <button data-phase="long">Длинный перерыв</button>
+        </div>
+        <h2 class="garden-title">Грядка</h2>
+        <div class="tools">
+          <button class="btn icon-btn" id="btnGarden" title="Грядка с арбузом"><span class="badge"></span></button>
+          <button class="btn icon-btn" id="btnMini" title="Мини-окно поверх всех окон" data-icon="mini"></button>
+          <button class="btn icon-btn" id="btnSettings" title="Настройки" data-icon="settings"></button>
+        </div>
+      </div>
+
+      <div class="views">
+        <!-- timer -->
+        <div class="view active" id="timerView">
+          <div class="timer-area">
+            <div class="ring-wrap" id="ringWrap">
+              <svg class="ring" viewBox="0 0 220 220">
+                <defs>
+                  <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" class="ring-stop-a"/><stop offset="1" class="ring-stop-b"/>
+                  </linearGradient>
+                </defs>
+                <circle class="ring-track" cx="110" cy="110" r="96"/>
+                <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="96"/>
+              </svg>
+              <div class="ring-face">
+                <div class="ring-caption" id="ringCaption">Фокус</div>
+                <div class="ring-time" id="ringTime">25:00</div>
+                <div class="ring-sub" id="ringSub"></div>
+                <div class="ring-dots" id="ringDots"></div>
+              </div>
+            </div>
+            <div class="task-label" id="taskLabel"></div>
+            <div class="controls">
+              <button class="btn round" id="btnReset" title="Сбросить таймер" data-icon="reset"></button>
+              <button class="btn primary start" id="btnStart">Старт</button>
+              <button class="btn round" id="btnSkip" title="Пропустить (к следующему этапу)" data-icon="skip"></button>
+            </div>
+            <div class="music-bar glass-lite hidden" id="musicBar">
+              <button class="btn primary icon-btn music-toggle" id="musicToggle" data-icon="play"></button>
+              <div class="music-title" id="musicTitle">Музыка для фокуса</div>
+              <button class="vol-icon" id="volIcon" data-icon="volume"></button>
+              <input type="range" class="slider" id="volSlider" min="0" max="100" value="40">
+            </div>
+          </div>
+          <div class="stats">
+            <div class="tiles">
+              <div class="glass tile"><div class="tile-value accent" id="statPomos">0</div><div class="tile-label" id="statPomosLabel">арбузов сегодня</div></div>
+              <div class="glass tile tile2"><div class="tile-value" id="statMinutes">0 мин</div><div class="tile-label">фокуса сегодня</div></div>
+              <div class="glass tile"><div class="tile-value" id="statTasks">0</div><div class="tile-label" id="statTasksLabel">задач выполнено</div></div>
+            </div>
+            <div class="glass chart">
+              <div class="chart-title">Фокус за 7 дней, мин</div>
+              <div class="bars" id="bars"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- garden -->
+        <div class="view" id="gardenView">
+          <div class="glass garden-card">
+            <div class="garden-scene"><canvas id="gardenCanvas"></canvas></div>
+            <div class="garden-info">
+              <div>
+                <div class="garden-stage" id="gardenStage">Семечко</div>
+                <div class="garden-sub" id="gardenSub"></div>
+              </div>
+              <div class="garden-eaten" id="gardenEaten">Съедено котом: 0</div>
+              <div class="progress"><div class="progress-fill" id="gardenFill"></div></div>
+              <div class="garden-min" id="gardenMin">0 / 100 мин</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="menu" class="ctx-menu"></div>
+  <div id="modalRoot"></div>
+  <div id="ytHost" aria-hidden="true"><div id="ytPlayer"></div></div>
+
+  <script src="themes.js"></script>
+  <script src="icons.js"></script>
+  <script src="garden.js"></script>
+  <script src="liquid.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
