@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'">
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; user-select: none; }
+    .card {
+      position: absolute; left: 10px; top: 10px; width: 300px; height: 316px; border-radius: 26px; overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      animation: pop .55s cubic-bezier(.2,1.5,.4,1) both, wiggle .5s ease-in-out .6s 2, out .35s ease-in 2.8s forwards;
+    }
+    .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card::after { content: ""; position: absolute; inset: 0; border-radius: 26px; box-shadow: inset 0 0 0 3px rgba(255,255,255,.85); }
+    .caption {
+      position: absolute; left: 0; right: 0; bottom: 14px; text-align: center;
+      font: 33px/1 Impact, "Arial Black", sans-serif; color: #fff; letter-spacing: 1px;
+      -webkit-text-stroke: 2px #000; paint-order: stroke fill; text-shadow: 0 3px 0 #000;
+      animation: slam .45s cubic-bezier(.2,1.6,.4,1) .25s both;
+    }
+    @keyframes pop { from { transform: scale(.4) rotate(-8deg); opacity: 0; } }
+    @keyframes wiggle { 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+    @keyframes out { to { transform: scale(.85) translateY(20px); opacity: 0; } }
+    @keyframes slam { from { transform: scale(2.4); opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="card"><img src="../assets/cat.jpg" alt=""><div class="caption">ВРЕМЯ РАБОТАТЬ!</div></div>
+</body>
+</html>

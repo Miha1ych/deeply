@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:">
+  <title>Deeply</title>
+  <style>
+    :root { --a: #43C59E; --b: #91E7C7; --text: #E9FFF7; --muted: #9DB9AF; --tint: 7,18,14; --border: rgba(255,255,255,.12); }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+    body {
+      font: 13px/1.3 "Segoe UI Variable Text", "Segoe UI", sans-serif; color: var(--text);
+      background: linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.01)), rgba(var(--tint), .5);
+      border: 1px solid var(--border); border-radius: 8px;
+      -webkit-app-region: drag; user-select: none;
+      display: flex; flex-direction: column; padding: 12px 12px 12px 14px; gap: 10px;
+      opacity: 0; transition: opacity .25s;
+    }
+    body.ready { opacity: 1; }
+    body.light { background: linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.1)), rgba(var(--tint), .62); }
+    button { -webkit-app-region: no-drag; font: inherit; color: inherit; cursor: pointer; }
+    .row { display: flex; align-items: center; gap: 12px; }
+    .ring { position: relative; width: 60px; height: 60px; flex: none; }
+    .ring > svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring circle { fill: none; stroke-width: 5; }
+    .ring .track { stroke: rgba(255,255,255,.14); }
+    body.light .ring .track { stroke: rgba(0,0,0,.12); }
+    .ring .prog { stroke: url(#g); stroke-linecap: round; transition: stroke-dashoffset .3s linear; filter: drop-shadow(0 0 4px var(--a)); }
+    .play {
+      position: absolute; inset: 9px; border-radius: 50%; border: 0;
+      background: linear-gradient(135deg, var(--a), var(--b)); color: #0b120f;
+      display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.35);
+      transition: transform .15s, filter .2s;
+    }
+    .play:hover { filter: brightness(1.08); transform: scale(1.05); }
+    .play:active { transform: scale(.95); }
+    .info { flex: 1; min-width: 0; }
+    .time { font: 300 32px/1 "Segoe UI Variable Display", "Segoe UI", sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -.5px; }
+    .sub { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; }
+    .sub b { color: var(--b); font-weight: 600; }
+    body.light .sub b { color: var(--a); }
+    .tools { display: flex; gap: 2px; align-self: flex-start; }
+    .ib { width: 30px; height: 30px; border: 0; border-radius: 8px; background: none; color: var(--muted); display: grid; place-items: center; transition: background .15s, color .15s; }
+    .ib:hover { background: rgba(255,255,255,.12); color: var(--text); }
+    body.light .ib:hover { background: rgba(0,0,0,.08); }
+    .music { display: none; align-items: center; gap: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    body.has-music .music { display: flex; }
+    .music .title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+    .slider { -webkit-app-region: no-drag; -webkit-appearance: none; width: 90px; height: 4px; border-radius: 4px; outline: none;
+      background: linear-gradient(90deg, var(--a), var(--b)) 0 / var(--val, 40%) 100% no-repeat, rgba(255,255,255,.18); }
+    body.light .slider { background: linear-gradient(90deg, var(--a), var(--b)) 0 / var(--val, 40%) 100% no-repeat, rgba(0,0,0,.14); }
+    .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--text); cursor: pointer; }
+    svg.ico { display: block; }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <div class="ring">
+      <svg viewBox="0 0 60 60"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" id="ga"/><stop offset="1" id="gb"/></linearGradient></defs>
+        <circle class="track" cx="30" cy="30" r="27"/><circle class="prog" id="prog" cx="30" cy="30" r="27"/></svg>
+      <button class="play" id="play" title="Старт / пауза"></button>
+    </div>
+    <div class="info">
+      <div class="time" id="time">25:00</div>
+      <div class="sub" id="sub"></div>
+    </div>
+    <div class="tools">
+      <button class="ib" id="skip" title="Пропустить"></button>
+      <button class="ib" id="expand" title="Развернуть"></button>
+      <button class="ib" id="hide" title="Скрыть в трей"></button>
+    </div>
+  </div>
+  <div class="music">
+    <button class="ib" id="mplay" title="Музыка"></button>
+    <div class="title" id="mtitle"></div>
+    <input type="range" class="slider" id="vol" min="0" max="100">
+  </div>
+  <script src="icons.js"></script>
+  <script src="mini.js"></script>
+</body>
+</html>

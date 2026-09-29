@@ -1,0 +1,49 @@
+{
+  "name": "deeply",
+  "productName": "Deeply",
+  "version": "2.0.0",
+  "description": "Фокус-таймер с арбузами",
+  "main": "src/main.js",
+  "author": "Deeply",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.deeply.app",
+    "productName": "Deeply",
+    "copyright": "Deeply",
+    "files": ["src/**/*", "assets/**/*", "package.json"],
+    "asarUnpack": ["assets/**"],
+    "directories": { "output": "dist", "buildResources": "build" },
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "icon": "assets/app.ico",
+      "signAndEditExecutable": true
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Deeply",
+      "uninstallDisplayName": "Deeply",
+      "installerIcon": "assets/app.ico",
+      "uninstallerIcon": "assets/app.ico",
+      "installerLanguages": ["ru_RU"],
+      "language": "1049",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "include": "build/installer.nsh",
+      "artifactName": "Deeply-Setup-${version}.${ext}"
+    }
+  }
+}
